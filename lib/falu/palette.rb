@@ -1,6 +1,8 @@
 module Falu
   class Palette
+    include Canfig::Instance
     include Enumerable
+
     attr_reader :swatches
 
     class << self
@@ -15,11 +17,14 @@ module Falu
       end
     end
 
-    def initialize(swatches=nil, primary: nil, secondary: nil, accent: nil)
+    def initialize(swatches=nil, **opts)
       @swatches = (swatches || []).map { |swatch| swatch.is_a?(Falu::Swatch) ? swatch : Falu::Swatch.new(*swatch) }
-      self.primary = primary
-      self.secondary = secondary
-      self.accent = accent
+
+      configuration.configure(opts.slice!(:primary, :secondary, :accent))
+
+      self.primary = opts[:primary]
+      self.secondary = opts[:secondary]
+      self.accent = opts[:accent]
     end
 
     def each(&block)
