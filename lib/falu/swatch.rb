@@ -1,6 +1,9 @@
 module Falu
   class Swatch
     attr_reader :color, :count
+
+    delegate :name, to: :color
+
     class << self
       def dump(swatch)
         swatch.as_json

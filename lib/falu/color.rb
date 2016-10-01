@@ -54,6 +54,11 @@ module Falu
       @color = color.is_a?(Falu::Colors::Base) ? color : self.class.color(color)
     end
 
+    def name
+      cname = Falu.colors.find { |c| c[:hex].downcase == hex.to_s.downcase }
+      cname.nil? ? cname : cname[:name]
+    end
+
     def hex
       @hex ||= color.to_hex
     end
