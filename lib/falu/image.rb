@@ -80,10 +80,10 @@ module Falu
 
     def sample(x=0, y=0, w=nil, h=nil, size: 10, sample: false, &block)
       palette = {}
-      pixels(x, y, w, h, size: size, sample: sample) do |x,y,color|
-        palette[color] ||= 0
-        palette[color] += 1
-        yield(color) if block_given?
+      pixels(x, y, w, h, size: size, sample: sample) do |x,y,rgb,hex|
+        palette[hex] ||= 0
+        palette[hex] += 1
+        yield(hex) if block_given?
       end
       palette.to_a.to_enum
     end
