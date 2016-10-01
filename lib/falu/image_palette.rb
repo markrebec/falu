@@ -14,7 +14,8 @@ module Falu
     end
 
     def swatches
-      @swatches ||= image.scale(scale).dither(colors).sample(0, 0, size: size, sample: sample).map { |swatch| Falu::Swatch.new(*swatch) }
+      @swatches = image.scale(scale).dither(colors).sample(0, 0, size: size, sample: sample).map { |swatch| Falu::Swatch.new(*swatch) } if @swatches.empty?
+      @swatches
     end
   end
 end

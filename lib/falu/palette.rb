@@ -18,7 +18,7 @@ module Falu
     end
 
     def initialize(swatches=nil, **opts)
-      @swatches = swatches.map { |swatch| swatch.is_a?(Falu::Swatch) ? swatch : Falu::Swatch.new(*swatch) } unless swatches.nil?
+      @swatches = (swatches || []).map { |swatch| swatch.is_a?(Falu::Swatch) ? swatch : Falu::Swatch.new(*swatch) }
 
       configuration.configure(opts.slice!(:primary, :secondary, :accent))
 
