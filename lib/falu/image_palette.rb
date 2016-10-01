@@ -1,5 +1,17 @@
 module Falu
   class ImagePalette < Palette
+    class << self
+      def dump(palette)
+        palette.as_json
+      end
+
+      def load(json)
+        return if json.nil?
+        json.symbolize_keys!
+        new(json.delete(:image), json.delete(:swatches), **json)
+      end
+    end
+
     delegate :sample, :scale, :size, to: :configuration
 
     def initialize(image, swatches=nil, **opts)
@@ -16,6 +28,14 @@ module Falu
     def swatches
       @swatches = image.scale(scale).sample(0, 0, size: size, sample: sample).map { |swatch| Falu::Swatch.new(*swatch) } if @swatches.empty?
       @swatches
+    end
+
+    def as_json(options={})
+      super(options).merge({
+        sample: sample,
+        scale: scale,
+        size: size
+      })
     end
   end
 end
