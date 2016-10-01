@@ -1,5 +1,6 @@
 require 'canfig'
 require 'active_support/core_ext/module'
+require 'active_support/core_ext/enumerable'
 require 'active_support/core_ext/object/json'
 require 'mini_magick'
 require 'falu/image'

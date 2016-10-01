@@ -114,7 +114,7 @@ module Falu
     end
 
     def primary
-      @primary ||= dominant
+      @primary ||= dominant#(3).sort_by { |swtch| swtch.color.rgb.colors.sum }.first
     end
 
     def secondary=(sec)
@@ -123,7 +123,9 @@ module Falu
     end
 
     def secondary
-      @secondary ||= dominant(2).last
+      @secondary ||= begin
+        dominant(3).last(2).sort_by { |swtch| (swtch.color.rgb.colors.sum - primary.color.rgb.colors.sum).abs }.last
+      end
     end
 
     def accent=(acc)
@@ -132,7 +134,7 @@ module Falu
     end
 
     def accent
-      @accent ||= dominant(3).last
+      @accent ||= dominant(3).find { |swtch| ![primary.color.to_s, secondary.color.to_s].include?(swtch.color.to_s) }
     end
 
     def as_json(options={})
