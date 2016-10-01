@@ -23,6 +23,25 @@ module Falu
       @image
     end
 
+    def histogram
+      #hist = run_command("convert", "#{path}", "-format", "%c", "histogram:info:").split("\n")
+      #return hist.first
+      run_command("convert", "#{path}", "-format", "%c", "histogram:info:").split("\n").map do |clr|
+        next unless match = clr.match(/\s*(\d+):\s+\((\d+,\d+,\d+)\)\s+(#[\da-fA-F]{6})\s+(.*)/)
+        color = {
+          count: match[1].to_i,
+          rgb: match[2],
+          hex: match[3].downcase
+        }
+
+        if block_given?
+          yield(*(color.values + [color]))
+        else
+          color
+        end
+      end.compact.to_enum
+    end
+
     def pixels(x=0, y=0, w=nil, h=nil, size: 10, sample: nil, &block)
       w ||= width
       h ||= height
@@ -40,13 +59,13 @@ module Falu
           pixels = pixels.sample(sample) if sample
 
           pixels.map do |pxl|
-            next unless match = pxl.match(/(\d+),(\d+):\s+\((\d+,\d+,\d+)\)\s+(#[\da-fA-F]{6})\s+srgb\((\d+,\d+,\d+)\)/)
+            next unless match = pxl.match(/(\d+),(\d+):\s+\((\d+,\d+,\d+)\)\s+(#[\da-fA-F]{6})\s+(.*)/)
 
             pixel = {
               x: match[1].to_i + pw,
               y: match[2].to_i + ph,
+              rgb: match[3],
               hex: match[4].downcase,
-              rgb: match[5]
             }
 
             if block_given?
