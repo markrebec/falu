@@ -7,6 +7,7 @@ require 'falu/color'
 require 'falu/swatch'
 require 'falu/palette'
 require 'falu/image_palette'
+require 'falu/dithered_palette'
 
 module Falu
 
