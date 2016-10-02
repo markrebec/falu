@@ -110,7 +110,11 @@ module Falu
 
     def primary=(pri)
       # TODO check that the color exists in the palette
-      @primary = pri
+      if pri.nil?
+        @primary = pri
+      else
+        @primary = pri.is_a?(Falu::Swatch) ? pri : Falu::Swatch.new(*pri)
+      end
     end
 
     def primary
@@ -119,22 +123,33 @@ module Falu
 
     def secondary=(sec)
       # TODO check that the color exists in the palette
-      @secondary = sec
+      if sec.nil?
+        @secondary = sec
+      else
+        @secondary = sec.is_a?(Falu::Swatch) ? sec : Falu::Swatch.new(*sec)
+      end
     end
 
     def secondary
       @secondary ||= begin
-        dominant(3).last(2).sort_by { |swtch| (swtch.color.rgb.colors.sum - primary.color.rgb.colors.sum).abs }.last
+        dominant(3).sort_by { |swtch| (swtch.color.hsl.lightness - primary.color.hsl.lightness).abs }.last
       end
     end
 
     def accent=(acc)
       # TODO check that the color exists in the palette
-      @accent = acc
+      if acc.nil?
+        @accent = acc
+      else
+        @accent = acc.is_a?(Falu::Swatch) ? acc : Falu::Swatch.new(*acc)
+      end
     end
 
     def accent
-      @accent ||= dominant(3).find { |swtch| ![primary.color.to_s, secondary.color.to_s].include?(swtch.color.to_s) }
+      @accent ||= begin
+        #dominant(5).select { |swtch| ![primary.color.to_s, secondary.color.to_s].include?(swtch.color.to_s) }.sort_by { |swtch| (swtch.color.hsl.lightness - primary.color.hsl.lightness).abs + (swtch.color.hsl.lightness - secondary.color.hsl.lightness).abs }.last
+        dominant(3).find { |swtch| ![primary.color.to_s, secondary.color.to_s].include?(swtch.color.to_s) }
+      end
     end
 
     def as_json(options={})
