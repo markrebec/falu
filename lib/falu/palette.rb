@@ -113,7 +113,7 @@ module Falu
       if pri.nil?
         @primary = pri
       else
-        @primary = pri.is_a?(Falu::Swatch) ? pri : Falu::Swatch.new(*pri)
+        @primary = pri.is_a?(Falu::Swatch) ? pri : Falu::Swatch.new(pri)
       end
     end
 
@@ -126,7 +126,7 @@ module Falu
       if sec.nil?
         @secondary = sec
       else
-        @secondary = sec.is_a?(Falu::Swatch) ? sec : Falu::Swatch.new(*sec)
+        @secondary = sec.is_a?(Falu::Swatch) ? sec : Falu::Swatch.new(sec)
       end
     end
 
@@ -141,7 +141,7 @@ module Falu
       if acc.nil?
         @accent = acc
       else
-        @accent = acc.is_a?(Falu::Swatch) ? acc : Falu::Swatch.new(*acc)
+        @accent = acc.is_a?(Falu::Swatch) ? acc : Falu::Swatch.new(acc)
       end
     end
 
