@@ -110,8 +110,8 @@ module Falu
 
     def primary=(pri)
       # TODO check that the color exists in the palette
-      if pri.nil?
-        @primary = pri
+      if pri.blank?
+        @primary = nil
       else
         @primary = pri.is_a?(Falu::Swatch) ? pri : Falu::Swatch.new(pri)
       end
@@ -123,8 +123,8 @@ module Falu
 
     def secondary=(sec)
       # TODO check that the color exists in the palette
-      if sec.nil?
-        @secondary = sec
+      if sec.blank?
+        @secondary = nil
       else
         @secondary = sec.is_a?(Falu::Swatch) ? sec : Falu::Swatch.new(sec)
       end
@@ -138,8 +138,8 @@ module Falu
 
     def accent=(acc)
       # TODO check that the color exists in the palette
-      if acc.nil?
-        @accent = acc
+      if acc.blank?
+        @accent = nil
       else
         @accent = acc.is_a?(Falu::Swatch) ? acc : Falu::Swatch.new(acc)
       end
