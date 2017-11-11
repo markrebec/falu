@@ -93,7 +93,7 @@ module Falu
       colors = Miro::DominantColors.new(@raw_image)
       hex = colors.to_hex
       pct = colors.by_percentage
-      hex.map_with_index do |clr,idx|
+      hex.each_with_index.map do |clr,idx|
         [clr, pct[idx] * 100]
       end
     end
