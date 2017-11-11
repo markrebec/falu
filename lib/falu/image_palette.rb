@@ -12,10 +12,10 @@ module Falu
       end
     end
 
-    delegate :sample, :scale, :size, to: :configuration
+    delegate :sample, :scale, :size, :method, to: :configuration
 
     def initialize(image, swatches=nil, **opts)
-      configuration.configure({sample: nil, scale: 500, size: 10})
+      configuration.configure({sample: nil, scale: 500, size: 10, method: :sample})
       super(swatches, **opts)
       @image = image
     end
@@ -26,7 +26,11 @@ module Falu
     end
 
     def swatches
-      @swatches = image.scale(scale).sample(0, 0, size: size, sample: sample).map { |swatch| Falu::Swatch.new(*swatch) } if @swatches.empty?
+      if method == :miro
+        @swatches = image.miro.map { |swatch| Falu::Swatch.new(*swatch) } if @swatches.empty?
+      else
+        @swatches = image.scale(scale).sample(0, 0, size: size, sample: sample).map { |swatch| Falu::Swatch.new(*swatch) } if @swatches.empty?
+      end
       @swatches
     end
 
@@ -34,7 +38,8 @@ module Falu
       super(options).merge({
         sample: sample,
         scale: scale,
-        size: size
+        size: size,
+        method: method
       })
     end
   end

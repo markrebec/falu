@@ -15,6 +15,7 @@ module Falu
     delegate :width, :height, :path, :run_command, to: :image
 
     def initialize(image)
+      @raw_image = image
       @image = image
     end
 
@@ -86,6 +87,15 @@ module Falu
         yield(hex) if block_given?
       end
       palette.to_a.to_enum
+    end
+
+    def miro
+      colors = Miro::DominantColors.new(@raw_image)
+      hex = colors.to_hex
+      pct = colors.by_percentage
+      hex.map_with_index do |clr,idx|
+        [clr, pct[idx] * 100]
+      end
     end
 
     def scale(scale, filename: nil)
